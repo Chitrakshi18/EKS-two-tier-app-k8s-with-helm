@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-deployment
+  namespace: two-tier-flask-mysql
+  labels:
+    app: flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-container
+        image: chitrakshipuri/two-tier-flask-mysql-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MYSQL_HOST 
+          value: "10.109.137.220" 
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: My_Sql_Password
+        - name: MYSQL_USER 
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmap           
+              key: MySql_User
+        - name: MYSQL_DB
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-configmap           
+              key: MySql_Db
