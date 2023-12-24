@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMapName }}  # Reference to the ConfigMap name specified in values.yaml
+data:
+  ENV_VARIABLE_1: {{ .Values.configMapValues.MySql_User }}
+  ENV_VARIABLE_2: {{ .Values.configMapValues.MySql_Db }}
