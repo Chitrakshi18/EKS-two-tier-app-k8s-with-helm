@@ -9,11 +9,13 @@ run following commands:
 3.  kubectl create namespace two-tier-flask-mysql
   
 4. Configure OIDC (so that worker nodes can communicate with aws services)
+   
    export cluster_name=two-tier-app
    oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
    eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
   
-5. Configure alb-ingress-controller (as we are using ingress resource to route the traffic to pods)
+6. Configure alb-ingress-controller (as we are using ingress resource to route the traffic to pods)
+   
    curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
    aws iam create-policy     --policy-name AWSLoadBalancerControllerIAMPolicy     --policy-document file://iam_policy.json
    eksctl create iamserviceaccount   --cluster=<your-cluster-name>   --namespace=kube-system   --name=aws-load-balancer-controller   --role-name AmazonEKSLoadBalancerControllerRole   --attach-policy-arn=arn:aws:iam::<your-aws-account-id>:policy/AWSLoadBalancerControllerIAMPolicy   --approve
