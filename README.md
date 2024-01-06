@@ -16,12 +16,14 @@ eksctl get cluster(aws configure (access key nd secret key firse if u cnat get c
 2. aws eks update-kubeconfig --name two-tier-app
 3.  kubectl create namespace two-tier-flask-mysql
   
-4. Configure OIDC (so that worker nodes can communicate with aws services) follow: https://github.com/iam-veeramalla/aws-devops-zero-to-hero/blob/main/day-22/configure-oidc-connector.md
+4. Configure OIDC (so that worker nodes can communicate with aws services)
+   [follow steps: https://github.com/iam-veeramalla/aws-devops-zero-to-hero/blob/main/day-22/configure-oidc-connector.md]
    a) export cluster_name=two-tier-app
    b) oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
    c) eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
   
-5. Configure alb-ingress-controller (as we are using ingress resource to route the traffic to pods) follow: https://github.com/iam-veeramalla/aws-devops-zero-to-hero/blob/main/day-22/alb-controller-add-on.md
+6. Configure alb-ingress-controller (as we are using ingress resource to route the traffic to pods)
+   [ follow steps: https://github.com/iam-veeramalla/aws-devops-zero-to-hero/blob/main/day-22/alb-controller-add-on.md]
    
    a) curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
    b) aws iam create-policy     --policy-name AWSLoadBalancerControllerIAMPolicy     --policy-document file://iam_policy.json
@@ -43,7 +45,7 @@ g)          helm install aws-load-balancer-controller eks/aws-load-balancer-cont
 7.  kubectl get ingress -n two-tier-flask-mysql (check if u can see the address of LB if yes then alb is configured check in aws console (load balancerss))
  
 8.Configure EBS driver(ebs driver will provision a dynamic volume (check volumes on aws console). it willbe configure using a default stroageClass that is gp2 as we didnt define any storageclass . and whatever we have  mention in pvc.yml it will claim that volume ) 
-(follow: https://github.com/iam-veeramalla/three-tier-architecture-demo/blob/master/EKS/05-ebs-csi-driver.md)
+[follow steps: https://github.com/iam-veeramalla/three-tier-architecture-demo/blob/master/EKS/05-ebs-csi-driver.md]
 
  eksctl create iamserviceaccount \
     --name ebs-csi-controller-sa \
@@ -73,8 +75,8 @@ g)          helm install aws-load-balancer-controller eks/aws-load-balancer-cont
   
 check the load balancer ip(app is ruuning)
 kubectl get ingress -n two-tier-flask-mysql
-
 kubectl exec -it <mysql-pod-name> -n <namespace> -- /bin/bash
+
  ----------------------------------------------------------------------------------------------------------------------- 
 to add observability of your cluster and send logs to cloud watch :
   
