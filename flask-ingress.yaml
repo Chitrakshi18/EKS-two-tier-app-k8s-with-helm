@@ -4,9 +4,10 @@ metadata:
   name: two-tier-ingress
   namespace: two-tier-flask-mysql
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing   
+    # kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
+  ingressClassName: alb
   rules:
   - http:
       paths:
@@ -17,3 +18,4 @@ spec:
             name: flask-service
             port:
               number: 80
+
