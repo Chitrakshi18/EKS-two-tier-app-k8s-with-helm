@@ -12,6 +12,7 @@ run following commands:
    
    export cluster_name=two-tier-app
    oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
+   
    eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
   
 6. Configure alb-ingress-controller (as we are using ingress resource to route the traffic to pods)
@@ -19,6 +20,7 @@ run following commands:
    curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
    aws iam create-policy     --policy-name AWSLoadBalancerControllerIAMPolicy     --policy-document file://iam_policy.json
    eksctl create iamserviceaccount   --cluster=<your-cluster-name>   --namespace=kube-system   --name=aws-load-balancer-controller   --role-name AmazonEKSLoadBalancerControllerRole   --attach-policy-arn=arn:aws:iam::<your-aws-account-id>:policy/AWSLoadBalancerControllerIAMPolicy   --approve
+   
    helm repo add eks https://aws.github.io/eks-charts
    helm repo update eks
    
