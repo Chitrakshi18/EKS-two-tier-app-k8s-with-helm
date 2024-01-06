@@ -68,10 +68,15 @@ g)          helm install aws-load-balancer-controller eks/aws-load-balancer-cont
   
 
    kubectl apply -f flask-deployment.yml -f flask-ingress.yaml -f flask-service.yml -f mysql-configMaps.yml -f mysql-db-query-configMaps.yml -f mysql-pvc.yaml -f mysql-secrets.yml -f mysql-service.yaml -f mysql-statefulset.yaml -n two-tier-flask-mysql
+   
    kubectl get all -n two-tier-flask-mysql
+   
    sudo nano flask-deployment.yml (edit the clusterIP of mysql service and apply again)
+   
    kubectl apply -f flask-deployment.yml -f flask-ingress.yaml -f flask-service.yml -f mysql-configMaps.yml -f mysql-db-query-configMaps.yml -f mysql-pvc.yaml -f mysql-secrets.yml -f mysql-service.yaml -f mysql-statefulset.yaml -n two-tier-flask-mysql
+   
    kubectl get all -n two-tier-flask-mysql
+   
   
 check the load balancer ip(app is ruuning)
 kubectl get ingress -n two-tier-flask-mysql
